@@ -11,9 +11,12 @@ type channelData = {
 }
 
 export default function createController(database: database, api: HelixInterface) {
+    
+    console.log('Initializin Controller')
 
 
     async function store(req: Request, res: Response) {
+        console.log('Controller.store request')
         const { channel } = req.params
 
 
@@ -53,6 +56,7 @@ export default function createController(database: database, api: HelixInterface
         }
     }
     async function index(req: Request, res: Response) {
+        console.log('Controller.index request')
 
 
         const data = await database.channel.findMany({
@@ -67,6 +71,7 @@ export default function createController(database: database, api: HelixInterface
 
     }
     async function get(req: Request, res: Response) {
+        console.log('Controller.get request')
         const { channel } = req.params
 
         const data = await database.channel.findUnique({
@@ -86,6 +91,7 @@ export default function createController(database: database, api: HelixInterface
 
     }
     async function updatePriority(req: Request, res: Response) {
+        console.log('Controller.updatePriority request')
         const { channel, priority } = req.params
         const data = await database.channel.update({
             data: {
@@ -104,6 +110,7 @@ export default function createController(database: database, api: HelixInterface
         })
     }
     async function enable(req: Request, res: Response) {
+        console.log('Controller.enable request')
         const { channel } = req.params
         const data = await database.channel.update({
             data: {
@@ -122,6 +129,7 @@ export default function createController(database: database, api: HelixInterface
         })
     }
     async function disable(req: Request, res: Response) {
+        console.log('Controller.disable request')
         const { channel } = req.params
         const data = await database.channel.update({
             data: {
@@ -142,6 +150,7 @@ export default function createController(database: database, api: HelixInterface
     }
 
     async function delChannel(req: Request, res: Response) {
+        console.log('Controller.delChannel request')
         const { channel } = req.params
         const data = await database.channel.delete({
             where: {

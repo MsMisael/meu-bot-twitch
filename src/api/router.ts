@@ -4,6 +4,7 @@ import { HelixInterface } from '../services/helix'
 
 
 export default function createRouter(database: database, api: HelixInterface) {
+    console.log('Initializing app router')
 
     const router = Router()
 

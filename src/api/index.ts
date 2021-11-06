@@ -6,6 +6,7 @@ import { HelixInterface } from '../services/helix'
 
 
 export default function createServer(database: database, api: HelixInterface) {
+    console.log('Initiaizating server')
 
     const server = express()
     const router = createRouter(database, api)

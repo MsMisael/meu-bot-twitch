@@ -2,6 +2,7 @@ import { Client } from 'tmi.js'
 
 
 export default function initializeChat() {
+    console.log('Chat inicialization')
     let hostQueue = ''
     let isHosting = false
     let hostedChannel: string | null
@@ -23,6 +24,7 @@ export default function initializeChat() {
     // })
 
     function host(channel: string) {
+        console.log(`Chat host call ${channel}`)
         if (channel) {
             hostQueue = channel
             if (!isHosting) {

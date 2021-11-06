@@ -16,7 +16,7 @@ export default function initializeHelix(): HelixInterface {
 
     async function renew() {
 
-        console.count('Helix Requesting')
+        console.count('Helix renew')
         const { data } = await axios.post('https://id.twitch.tv/oauth2/token', {
             client_id: process.env.HELIX_CLIENT_ID,
             client_secret: process.env.HELIX_CLIENT_SECRET,
@@ -27,7 +27,7 @@ export default function initializeHelix(): HelixInterface {
     }
 
     async function authenticate() {
-
+        console.count('Helix authenticate')
         const { data } = await axios.post('https://id.twitch.tv/oauth2/token', {
             client_id: process.env.HELIX_CLIENT_ID,
             client_secret: process.env.HELIX_CLIENT_SECRET,
@@ -54,7 +54,7 @@ export default function initializeHelix(): HelixInterface {
     })
 
     async function searchLiveChannels(query: string, liveOnly = false) {
-        console.count('Helix Requesting')
+        console.count('Helix searchLiveChannels')
         return api.get('/search/channels', {
             params: {
                 query, 'live_only': liveOnly
@@ -63,7 +63,7 @@ export default function initializeHelix(): HelixInterface {
     }
 
     async function getChannelInfo(user_id?: string | string[], user_login?: string | string[]) {
-        console.count('Helix Requesting')
+        console.count('Helix getChannelInfo')
         return api.get('/streams', {
             params: {
                 user_id,

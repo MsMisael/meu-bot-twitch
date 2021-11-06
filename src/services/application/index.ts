@@ -4,10 +4,12 @@ import { Prisma } from '.prisma/client'
 import initializeChat from '../chat'
 
 export default function createApplication(database: database, api: HelixInterface) {
+    console.log('Application inicialization')
     let channels: string[] = []
     const chat = initializeChat()
 
     async function verifyChannels() {
+        console.log('Querying Channels in DB')
 
         const adata = await database.channel.findMany({
             where: {
