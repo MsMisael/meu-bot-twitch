@@ -22,13 +22,15 @@ export default function createApplication(database: database, api: HelixInterfac
         const { data }: { data: { data: { user_login: string }[] } } = await api.getChannelInfo(undefined, channels)
 
         if (data.data.length <= 0) return
-        
+
         const index = Math.min(
             ...data.data.map(
                 (channel: { user_login: string }) => channels.indexOf(channel.user_login)
             ))
 
-        chat.host(channels[index])
+        if (index >= 0) {
+            chat.host(channels[index])
+        }
     }
 
 

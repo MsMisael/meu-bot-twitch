@@ -15,7 +15,7 @@ export default function initializeChat() {
             username: process.env.CHAT_OAUTH_USER,
             password: process.env.CHAT_OAUTH_TOKEN
         },
-        channels: ['misasouzabot']
+        channels: [process.env.CHAT_CHANNEL || '']
     })
 
     // chat.on('message', (channel, userStage, message, self) => {
@@ -23,23 +23,25 @@ export default function initializeChat() {
     // })
 
     function host(channel: string) {
-        hostQueue = channel
-        if (!isHosting) {
-            // chat.host('misasouzabot', hostQueue).then((data) => {
-            //     hostedChannel = data[0]
-            // }).catch((err) => {
-            //     console.log(err)
-            // })
-            chat.say('misasouzabot', `hosting ${hostQueue}`).then((data) => {
-                hostedChannel = data[0]
-                hostQueue = ''
-                isHosting = true
-                // setTimeout(()=>{
-                //     isHosting = false
-                // },5000)
-            }).catch((err) => {
-                console.log(err)
-            })
+        if (channel) {
+            hostQueue = channel
+            if (!isHosting) {
+                // chat.host(process.env.CHAT_CHANNEL || '', hostQueue).then((data) => {
+                //     hostedChannel = data[0]
+                // }).catch((err) => {
+                //     console.log(err)
+                // })
+                chat.say(process.env.CHAT_CHANNEL || '', `hosting ${hostQueue}`).then((data) => {
+                    hostedChannel = data[0]
+                    hostQueue = ''
+                    isHosting = true
+                    // setTimeout(()=>{
+                    //     isHosting = false
+                    // },5000)
+                }).catch((err) => {
+                    console.log(err)
+                })
+            }
         }
     }
 
