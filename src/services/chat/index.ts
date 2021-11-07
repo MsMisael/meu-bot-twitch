@@ -1,12 +1,14 @@
 import { Client } from 'tmi.js'
+import { database } from '../../api/controller'
 
 
-export default function initializeChat() {
+export default function initializeChat(database: database, start: () => void, stop: () => void) {
     console.log('Chat inicialization')
+    const onConnectListeners: ((chat: Client) => void)[] = []
     let hostQueue = ''
     let isHosting = false
     let hostedChannel: string | null
-
+    let hostEventId: string | undefined
     const chat = new Client({
         options: {
             clientId: process.env.HELIX_CLIENT_ID,
@@ -28,42 +30,51 @@ export default function initializeChat() {
         if (channel) {
             hostQueue = channel
             if (!isHosting) {
-                // chat.host(process.env.CHAT_CHANNEL || '', hostQueue).then((data) => {
-                //     hostedChannel = data[0]
-                // }).catch((err) => {
-                //     console.log(err)
-                // })
-                chat.say(process.env.CHAT_CHANNEL || '', `hosting ${hostQueue}`).then((data) => {
-                    hostedChannel = data[0]
-                    hostQueue = ''
+                stop()
+                chat.host(process.env.CHAT_CHANNEL || '', hostQueue).then((data) => {
                     isHosting = true
-                    // setTimeout(()=>{
-                    //     isHosting = false
-                    // },5000)
+                    hostedChannel = data[0]
+
                 }).catch((err) => {
-                    console.log(err)
+                    start()
+                    console.log('error on give host', err)
                 })
+
+            } else {
+                console.log('Channel arealy hosting', hostedChannel)
             }
         }
     }
 
     chat.on('unhost', (channel, views) => {
+        start()
         isHosting = false
         hostedChannel = null
         console.log('unhost', channel, views)
-
     })
 
     chat.on('hosting', (channel, target, views) => {
+        stop()
         isHosting = true
-        hostedChannel = channel
-        console.log('hosting', channel, target, views)
+        hostedChannel = target
+        console.log('hosting', channel, 'to', target, views)
     })
 
 
+    chat.on('connected', () => {
+        start()
+        for (const onConnectListener of onConnectListeners) {
+            onConnectListener(chat)
+        }
+    })
+
+    function onConnect(callback: (chat: Client) => {}) {
+        onConnectListeners.push(callback)
+    }
 
     chat.connect()
     return {
-        host
+        host,
+        onConnect
     }
 }

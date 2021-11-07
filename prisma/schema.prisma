@@ -18,3 +18,10 @@ model Channel {
   priority   Int     @default(0)
   enabled    Boolean @default(false)
 }
+
+model Hosts {
+  id             String    @id @default(uuid())
+  channel        String
+  start          DateTime  @default(now())
+  end            DateTime?
+}

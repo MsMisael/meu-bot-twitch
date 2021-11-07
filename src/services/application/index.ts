@@ -6,7 +6,10 @@ import initializeChat from '../chat'
 export default function createApplication(database: database, api: HelixInterface) {
     console.log('Application inicialization')
     let channels: string[] = []
-    const chat = initializeChat()
+    let interval: NodeJS.Timeout
+    const chat = initializeChat(database,start,stop)
+
+    
 
     async function verifyChannels() {
         console.log('Querying Channels in DB')
@@ -22,7 +25,6 @@ export default function createApplication(database: database, api: HelixInterfac
         channels = [...adata.map((channel) => channel.user_login)]
 
         const { data }: { data: { data: { user_login: string }[] } } = await api.getChannelInfo(undefined, channels)
-
         if (data.data.length <= 0) return
 
         const index = Math.min(
@@ -35,10 +37,15 @@ export default function createApplication(database: database, api: HelixInterfac
         }
     }
 
-
-    verifyChannels()
-    setInterval(verifyChannels, Number(process.env.APPLICATION_SERVER_TICKRATE || 5) * 60 * 1000)
-
+    function start(){
+        verifyChannels()
+        interval = setInterval(verifyChannels, Number(process.env.APPLICATION_SERVER_TICKRATE || 5) * 60 * 1000)
+    
+    }
+    function stop(){
+        clearInterval(interval)
+    }
+    
     return {
     }
 }
