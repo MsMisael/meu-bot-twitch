@@ -13,7 +13,7 @@ export default function createServer(database: database, api: HelixInterface) {
 
     const server = express()
     const router = createRouter(database, api)
-    //server.use(cors())
+    server.use(cors())
 
     api.authenticate()
     //auth middleware
