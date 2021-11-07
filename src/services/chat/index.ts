@@ -2,7 +2,7 @@ import { Client } from 'tmi.js'
 import { database } from '../../api/controller'
 
 
-export default function initializeChat(database: database, start: () => void, stop: () => void) {
+export default function initializeChat(database: database, start: (timeOutOnly?:boolean) => void, stop: () => void) {
     console.log('Chat inicialization')
     const onConnectListeners: ((chat: Client) => void)[] = []
     let hostQueue = ''
@@ -47,7 +47,7 @@ export default function initializeChat(database: database, start: () => void, st
     }
 
     chat.on('unhost', (channel, views) => {
-        start()
+        start(true)
         isHosting = false
         hostedChannel = null
         console.log('unhost', channel, views)

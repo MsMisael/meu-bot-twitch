@@ -7,9 +7,9 @@ export default function createApplication(database: database, api: HelixInterfac
     console.log('Application inicialization')
     let channels: string[] = []
     let interval: NodeJS.Timeout
-    const chat = initializeChat(database,start,stop)
+    const chat = initializeChat(database, start, stop)
 
-    
+
 
     async function verifyChannels() {
         console.log('Querying Channels in DB')
@@ -37,15 +37,15 @@ export default function createApplication(database: database, api: HelixInterfac
         }
     }
 
-    function start(){
-        verifyChannels()
+    function start(timeOutOnly = false) {
+        if (!timeOutOnly) verifyChannels()
         interval = setInterval(verifyChannels, Number(process.env.APPLICATION_SERVER_TICKRATE || 5) * 60 * 1000)
-    
     }
-    function stop(){
+
+    function stop() {
         clearInterval(interval)
     }
-    
+
     return {
     }
 }

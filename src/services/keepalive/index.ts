@@ -3,14 +3,17 @@
 import http from 'http'
 
 function startKeepAlive() {
-    setInterval(function() {
+    setInterval(function () {
         var options = {
-            host:  process.env.DOMAIN,
+            host: process.env.DOMAIN,
             port: 80,
-            path: '/'
+            path: '/',
+            headers: {
+                client_id: process.env.HELIX_CLIENT_ID
+            }
         };
-        http.get(options, function(res) {
-            res.on('data', function(chunk) {
+        http.get(options, function (res) {
+            res.on('data', function (chunk) {
                 try {
                     // optional logging... disable after it's working
                     console.log("HEROKU RESPONSE: " + chunk);
@@ -18,7 +21,7 @@ function startKeepAlive() {
                     console.log(err);
                 }
             });
-        }).on('error', function(err) {
+        }).on('error', function (err) {
             console.log("Error: " + err.message);
         });
     }, 20 * 60 * 1000); // load every 20 minutes

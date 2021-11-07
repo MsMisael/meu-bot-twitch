@@ -11,8 +11,8 @@ type channelData = {
 }
 
 export default function createController(database: database, api: HelixInterface) {
-    
-    console.log('Initializin Controller')
+
+    console.log('Initializing Controller')
 
 
     async function store(req: Request, res: Response) {
@@ -40,7 +40,7 @@ export default function createController(database: database, api: HelixInterface
                 })
 
                 res.status(201).json({
-                    channel
+                    ...channel
                 })
             } else {
                 res.status(400).json({
@@ -60,14 +60,13 @@ export default function createController(database: database, api: HelixInterface
 
 
         const data = await database.channel.findMany({
-            select: {
-                user_login: true,
-                user_name: true
+            orderBy: {
+                priority: 'asc'
             }
         })
-        res.status(200).json({
-            data
-        })
+        res.status(200).json([
+            ...data
+        ])
 
     }
     async function get(req: Request, res: Response) {
@@ -159,7 +158,7 @@ export default function createController(database: database, api: HelixInterface
         })
 
         res.status(201).json({
-            data
+            ...data
         })
 
     }
