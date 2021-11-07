@@ -9,6 +9,8 @@ import createApplication from './services/application'
 
 import initializeHelix from './services/helix'
 
+import './services/keepalive'
+
 //Database Service
 const database = new PrismaClient()
 
