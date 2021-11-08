@@ -7,7 +7,7 @@ function startKeepAlive() {
         var options = {
             host: process.env.DOMAIN,
             port: 80,
-            path: '/',
+            path: '/api',
             headers: {
                 client_id: process.env.HELIX_CLIENT_ID
             }
